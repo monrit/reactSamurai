@@ -1,7 +1,9 @@
 import style from "./Navbar.module.css";
 import { NavLink } from "react-router-dom";
+import Friends from "./Friends/Friends";
+import state from "../../redux/state";
 
-function Navbar() {
+function Navbar(props) {
     const selectedLink = navData => style.item + " " + (navData.isActive ? style.active : null);
     return (
         <nav className={style.nav}>
@@ -20,6 +22,10 @@ function Navbar() {
             <div>
                 <NavLink to="/settings" className={selectedLink}>Settings</NavLink>
             </div>
+            <div>
+                <Friends friends={props.state.friends}/>
+            </div>
+
         </nav>
     );
 }

@@ -1,31 +1,20 @@
-import { NavLink } from "react-router-dom";
+import DialogItem from "./DialogItem/DialogItem";
+import Message from "./Message/Message";
 import style from "./Messages.module.css";
 
-function Messages() {
-    const selectedLink = navData => style.item + " " + (navData.isActive ? style.active: null); 
+function Messages(props) {
+
+    let peopleElements = props.state.people.map(item => <DialogItem name={item.name} id={item.id} />);
+
+    let messagesElements = props.state.messages.map(message => <Message message={message.text} />)
+
     return (
         <div className={style.dialogs}>
             <div className={style.messagesItems}>
-                <div className={style.item + " " + style.active}>
-                    <NavLink to="/messages/1" className={selectedLink}>Asya</NavLink>
-                </div>
-                <div className={style.item}>
-                    <NavLink to="/messages/2" className={selectedLink}>Dima</NavLink>
-                </div>
-                <div className={style.item}>
-                    <NavLink to="/messages/3" className={selectedLink}>Petya</NavLink>
-                </div>
-                <div className={style.item}>
-                    <NavLink to="/messages/4" className={selectedLink}>Ostap</NavLink>
-                </div>
-                <div className={style.item}>
-                    <NavLink to="/messages/5" className={selectedLink}>Andrew</NavLink>
-                </div>
+                {peopleElements}
             </div>
             <div className={style.messages}>
-                <div className={style.message}>Balls</div>
-                <div className={style.message}>Chornovil</div>
-                <div className={style.message}>Stus</div>
+                {messagesElements}
             </div>
         </div>
     );

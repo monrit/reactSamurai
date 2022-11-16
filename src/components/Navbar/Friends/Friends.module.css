@@ -1,0 +1,20 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 6px;
+}
+
+.friend {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    display: block;
+}
+
+.active {
+    color: gold;
+}
+
+.friends {
+    margin-top: 36px;
+}

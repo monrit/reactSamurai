@@ -7,19 +7,6 @@
     padding: 10px;
 }
 
-.item {
-    color: white;
-    text-decoration: none;
-}
-
 .messages {
     padding: 10px;
-}
-
-.message {
-
-}
-
-.active {
-    color: gold;
 }

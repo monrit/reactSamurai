@@ -1,17 +1,21 @@
 import style from "./MyPosts.module.css";
 import Post from "./Post/Post";
 
-function MyPosts() {
+function MyPosts(props) {
+
+    let postsElements = props.posts.map(post => <Post message={post.message} likes={post.likes} />)
+
     return (
-        <div>
+        <div className={style.postsBlock}>
+            <h3>My Posts</h3>
             <div>
-                My Posts
+                <textarea></textarea>
             </div>
-            <textarea></textarea>
-            <button>add post</button>
+            <div>
+                <button>add post</button>
+            </div>
             <div className={style.posts}>
-                <Post message="ШО Я ТУТА ЗДЕЛАВ" likes="15"/>
-                <Post message="ЄБАТЬ ШО Я НАРОБИВ" likes="20"/>
+                {postsElements}
             </div>
         </div>
     );
