@@ -1,6 +1,6 @@
 import style from "./Navbar.module.css";
 import { NavLink } from "react-router-dom";
-import Friends from "./Friends/Friends";
+import Friends from "../Friends/Friends";
 
 function Navbar(props) {
     const selectedLink = navData => style.item + " " + (navData.isActive ? style.active : null);
