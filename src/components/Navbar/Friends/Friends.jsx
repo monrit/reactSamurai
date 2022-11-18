@@ -10,7 +10,6 @@ function Friends(props) {
             <NavLink to="/friends" className={selectedLink}>Friends</NavLink>
             <div className={style.wrapper}>
                 { friends }
-                тест
             </div>
         </div>
     );
