@@ -21,7 +21,8 @@ let state = {
         posts: [
             { id: 1, message: "ШО Я ТУТА ЗДЕЛАВ", likes: 15 },
             { id: 2, message: "ЄБАТЬ ШО Я НАРОБИВ", likes: 27 }
-        ]
+        ],
+        userInputText: ""
     },
     sidebar: {
         friends: [
@@ -41,5 +42,12 @@ export let addPost = textMessage => {
     state.profilePage.posts.push(post);
     renderEntireTree(state);
 };
+
+export let userInput = event => {
+    let text = event.target.value;
+    state.profilePage.userInputText = text ? text: text;
+    console.log(state.profilePage.userInputText );
+    renderEntireTree(state); 
+}
 
 export default state;
