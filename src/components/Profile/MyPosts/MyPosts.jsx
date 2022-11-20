@@ -16,7 +16,7 @@ function MyPosts(props) {
         <div className={style.postsBlock}>
             <h3>My Posts</h3>
             <div>
-                <textarea ref={text}></textarea>
+                <textarea ref={text} value="nigga"/>
             </div>
             <div>
                 <button onClick={asyaILoveYou}>add post</button>
