@@ -11,8 +11,8 @@ function Messages(props) {
 
     let text = React.createRef();
 
-    function sendMessage(event) {
-        alert(text.current.value);
+    function updateMessage() {
+        props.updateMessageInput(text.current.value);
     }
     return (
         <div className={style.dialogs}>
@@ -22,8 +22,8 @@ function Messages(props) {
             <div className={style.messages}>
                 {messagesElements}
                 <div>
-                    <textarea ref={text}></textarea>
-                    <button onClick={sendMessage}>Send</button>
+                    <textarea ref={text} value={props.state.userInputText} onChange={updateMessage}/>
+                    <button onClick={props.addMessage}>Send</button>
                 </div>
             </div>
         </div>

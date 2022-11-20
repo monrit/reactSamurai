@@ -8,18 +8,18 @@ function MyPosts(props) {
 
     let text = React.createRef();
 
-    function asyaILoveYou(event) {
-        props.addPost(text.current.value);
+    function changeInput() {
+        props.updatePostInput(text.current.value);
     }
 
     return (
         <div className={style.postsBlock}>
             <h3>My Posts</h3>
             <div>
-                <textarea ref={text} onChange={props.userInput}>{props.userInputText}</textarea>
+                <textarea ref={text} onChange={changeInput} value={props.userInputText} />
             </div>
             <div>
-                <button onClick={asyaILoveYou}>add post</button>
+                <button onClick={props.addPost}>add post</button>
             </div>
             <div className={style.posts}>
                 {postsElements}

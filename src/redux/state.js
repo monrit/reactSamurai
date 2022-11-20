@@ -15,7 +15,8 @@ let state = {
             { text: "Blue Balls", id: 2 },
             { text: "Chornovil", id: 3 },
             { text: "Stus", id: 4 }
-        ]
+        ],
+        userInputText: "Хуй"
     },
     profilePage: {
         posts: [
@@ -33,21 +34,35 @@ let state = {
     }
 };
 
-export let addPost = textMessage => {
+export let addPost = () => {
     let post = {
         id: 3,
-        message: textMessage,
+        message: state.profilePage.userInputText,
         likes: 0
     };
+    state.profilePage.userInputText = '';
     state.profilePage.posts.push(post);
     renderEntireTree(state);
 };
 
-export let userInput = event => {
-    let text = event.target.value;
-    state.profilePage.userInputText = text ? text: text;
-    console.log(state.profilePage.userInputText );
+export let updatePostInput = text => {
+    state.profilePage.userInputText = text;
     renderEntireTree(state); 
 }
+
+export let updateMessageInput = text => {
+    state.messagesPage.userInputText = text;
+    renderEntireTree(state); 
+}
+
+export let addMessage = () => {
+    let message = {
+        text: state.messagesPage.userInputText,
+        id: 3
+    };
+    state.messagesPage.userInputText = '';
+    state.messagesPage.messages.push(message);
+    renderEntireTree(state);
+};
 
 export default state;
