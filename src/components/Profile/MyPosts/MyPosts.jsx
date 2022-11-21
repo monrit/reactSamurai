@@ -9,17 +9,17 @@ function MyPosts(props) {
     let text = React.createRef();
 
     function changeInput() {
-        props.updatePostInput(text.current.value);
+        props.store.updatePostInput(text.current.value);
     }
 
     return (
         <div className={style.postsBlock}>
             <h3>My Posts</h3>
             <div>
-                <textarea ref={text} onChange={changeInput} value={props.userInputText} />
+                <textarea ref={text} onChange={changeInput} value={props.store.getState().profilePage.userInputText} />
             </div>
             <div>
-                <button onClick={props.addPost}>add post</button>
+                <button onClick={props.store.addPost.bind(props.store)}>add post</button>
             </div>
             <div className={style.posts}>
                 {postsElements}
