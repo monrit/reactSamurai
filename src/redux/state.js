@@ -1,4 +1,4 @@
-import { renderEntireTree } from "../render";
+let renderEntireTree = () => {};
 
 let state = {
     messagesPage: {
@@ -15,13 +15,15 @@ let state = {
             { text: "Blue Balls", id: 2 },
             { text: "Chornovil", id: 3 },
             { text: "Stus", id: 4 }
-        ]
+        ],
+        userInputText: ""
     },
     profilePage: {
         posts: [
             { id: 1, message: "ШО Я ТУТА ЗДЕЛАВ", likes: 15 },
             { id: 2, message: "ЄБАТЬ ШО Я НАРОБИВ", likes: 27 }
-        ]
+        ],
+        userInputText: ""
     },
     sidebar: {
         friends: [
@@ -32,14 +34,39 @@ let state = {
     }
 };
 
-export let addPost = textMessage => {
+export const addPost = () => {
     let post = {
         id: 3,
-        message: textMessage,
+        message: state.profilePage.userInputText,
         likes: 0
     };
+    state.profilePage.userInputText = '';
     state.profilePage.posts.push(post);
     renderEntireTree(state);
+};
+
+export const updatePostInput = text => {
+    state.profilePage.userInputText = text;
+    renderEntireTree(state); 
+}
+
+export const updateMessageInput = text => {
+    state.messagesPage.userInputText = text;
+    renderEntireTree(state); 
+}
+
+export const addMessage = () => {
+    let message = {
+        text: state.messagesPage.userInputText,
+        id: 3
+    };
+    state.messagesPage.userInputText = '';
+    state.messagesPage.messages.push(message);
+    renderEntireTree(state);
+};
+
+export const subscribe = observer => {
+    renderEntireTree = observer;
 };
 
 export default state;
