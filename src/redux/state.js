@@ -1,3 +1,8 @@
+const ADD_POST = "ADD-POST";
+const UPDATE_POST_INPUT = "UPDATE-POST-INPUT";
+const ADD_MESSAGE = "ADD-MESSAGE";
+const UPDATE_MESSAGE_INPUT = "UPDATE-MESSAGE-INPUT";
+
 let store = {
     _state: {
         messagesPage: {
@@ -43,7 +48,7 @@ let store = {
         this._subscriber = observer;
     },
     dispatch(action) {
-        if (action.type === "ADD-POST") {
+        if (action.type === ADD_POST) {
             let text = this._state.profilePage.userInputText;
             if (!text) {
                 return;
@@ -56,10 +61,10 @@ let store = {
             this._state.profilePage.userInputText = '';
             this._state.profilePage.posts.push(post);
             this._subscriber(this);
-        } else if (action.type === "UPDATE-POST-INPUT") {
+        } else if (action.type === UPDATE_POST_INPUT) {
             this._state.profilePage.userInputText = action.input;
             this._subscriber(this);
-        } else if (action.type === "ADD-MESSAGE") {
+        } else if (action.type === ADD_MESSAGE) {
             let text = this._state.messagesPage.userInputText;
             if (!text) {
                 return;
@@ -71,13 +76,17 @@ let store = {
             this._state.messagesPage.userInputText = '';
             this._state.messagesPage.messages.push(message);
             this._subscriber(this);
-        } else if (action.type === "UPDATE-MESSAGE-INPUT") {
-            debugger;
+        } else if (action.type === UPDATE_MESSAGE_INPUT) {
             this._state.messagesPage.userInputText = action.input;
             this._subscriber(this);
         }
     }
 }
 
-export default store;
+export const addPostActionCreator = () => ({ type: ADD_POST });
+export const updatePostInputActionCreator = (text) => ({ type: UPDATE_POST_INPUT, input: text });
+export const addMessageActionCreator = () => ({ type: ADD_MESSAGE });
+export const updateMessageInputActionCreator = (text) => ({ type: UPDATE_MESSAGE_INPUT, input: text });
+
 window.store = store;
+export default store;

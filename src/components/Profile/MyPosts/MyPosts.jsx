@@ -1,6 +1,7 @@
 import React from "react";
 import style from "./MyPosts.module.css";
 import Post from "./Post/Post";
+import { addPostActionCreator, updatePostInputActionCreator } from "./../../../redux/state";
 
 function MyPosts(props) {
 
@@ -9,16 +10,12 @@ function MyPosts(props) {
     let text = React.createRef();
 
     function changeInput() {
-        props.dispatch({
-            type: "UPDATE-POST-INPUT",
-            input: text.current.value
-        });
+        const input = text.current.value;
+        props.dispatch( updatePostInputActionCreator(input) );
     }
 
     function addPost() {
-        props.dispatch({
-            type: "ADD-POST"
-        });
+        props.dispatch( addPostActionCreator() );
     }
 
     return (
