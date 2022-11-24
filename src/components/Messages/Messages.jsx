@@ -12,11 +12,16 @@ function Messages(props) {
     let text = React.createRef();
 
     function updateMessage() {
-        props.store.updateMessageInput(text.current.value);
+        props.dispatch({
+            type: "UPDATE-MESSAGE-INPUT",
+            input: text.current.value
+        });
     }
 
     function addMessage() {
-        props.store.addMessage();
+        props.dispatch({
+            type: "ADD-MESSAGE"
+        });
     }
     return (
         <div className={style.dialogs}>

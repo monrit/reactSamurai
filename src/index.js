@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 let renderEntireTree = (store) => {
     root.render(
     <React.StrictMode>
-      <App state={store.getState()} store={store} />
+      <App state={store.getState()} dispatch={store.dispatch.bind(store)} />
     </React.StrictMode>
   );
 }

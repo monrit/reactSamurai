@@ -9,11 +9,16 @@ function MyPosts(props) {
     let text = React.createRef();
 
     function changeInput() {
-        props.store.updatePostInput(text.current.value);
+        props.dispatch({
+            type: "UPDATE-POST-INPUT",
+            input: text.current.value
+        });
     }
 
     function addPost() {
-        props.store.addPost();
+        props.dispatch({
+            type: "ADD-POST"
+        });
     }
 
     return (
