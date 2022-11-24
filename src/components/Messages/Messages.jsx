@@ -12,7 +12,11 @@ function Messages(props) {
     let text = React.createRef();
 
     function updateMessage() {
-        props.updateMessageInput(text.current.value);
+        props.store.updateMessageInput(text.current.value);
+    }
+
+    function addMessage() {
+        props.store.addMessage();
     }
     return (
         <div className={style.dialogs}>
@@ -23,7 +27,7 @@ function Messages(props) {
                 {messagesElements}
                 <div>
                     <textarea ref={text} value={props.state.userInputText} onChange={updateMessage}/>
-                    <button onClick={props.addMessage}>Send</button>
+                    <button onClick={addMessage}>Send</button>
                 </div>
             </div>
         </div>

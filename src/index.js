@@ -4,18 +4,18 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { store } from './redux/state';
+import store from './redux/state';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-let renderEntireTree = (state) => {
+let renderEntireTree = (store) => {
     root.render(
     <React.StrictMode>
-      <App state={state} store={store} />
+      <App state={store.getState()} store={store} />
     </React.StrictMode>
   );
 }
 
-renderEntireTree(store.getState());
+renderEntireTree(store);
 store.subscribe(renderEntireTree);
 
 // If you want to start measuring performance in your app, pass a functionІ

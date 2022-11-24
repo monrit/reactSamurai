@@ -1,7 +1,4 @@
-export let store = {
-    _subscriber() {
-        console.log("No subscribers (observers)");
-    },
+let store = {
     _state: {
         messagesPage: {
             people: [
@@ -35,37 +32,53 @@ export let store = {
             ]
         }
     },
+    _subscriber() {
+        console.log("No subscribers (observers)");
+    },
+    
     getState() {
         return this._state;
     },
     subscribe(observer) {
         this._subscriber = observer;
     },
+
     addPost() {
+        let text = this._state.profilePage.userInputText;
+        if (!text) {
+            return;
+        }
         let post = {
             id: 3,
-            message: this._state.profilePage.userInputText,
+            message: text,
             likes: 0
         };
         this._state.profilePage.userInputText = '';
         this._state.profilePage.posts.push(post);
-        this._subscriber(this._state);
+        this._subscriber(this);
     },
     addMessage() {
+        let text = this._state.messagesPage.userInputText;
+        if (!text) {
+            return;
+        }
         let message = {
-            text: this._state.messagesPage.userInputText,
+            text: text,
             id: 3
         };
         this._state.messagesPage.userInputText = '';
         this._state.messagesPage.messages.push(message);
-        this._subscriber(this._state);
+        this._subscriber(this);
     },
     updatePostInput(text) {
         this._state.profilePage.userInputText = text;
-        this._subscriber(this._state);
+        this._subscriber(this);
     },
     updateMessageInput(text) {
         this._state.messagesPage.userInputText = text;
-        this._subscriber(this._state);
+        this._subscriber(this);
     }
 }
+
+export default store;
+window.store = store;
