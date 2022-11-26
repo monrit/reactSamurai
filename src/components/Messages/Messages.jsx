@@ -1,5 +1,5 @@
 import React from "react";
-import { addMessageActionCreator, updateMessageInputActionCreator } from "../../redux/state";
+import { addMessageActionCreator, updateMessageInputActionCreator } from "../../redux/messagesReducer";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import style from "./Messages.module.css";
@@ -10,10 +10,8 @@ function Messages(props) {
 
     let messagesElements = props.state.messages.map(message => <Message message={message.text} />);
 
-    let text = React.createRef();
-
-    function updateMessage() {
-        const input = text.current.value;
+    function updateMessage(event) {
+        const input = event.target.value;
         props.dispatch( updateMessageInputActionCreator(input) );
     }
 
@@ -28,7 +26,7 @@ function Messages(props) {
             <div className={style.messages}>
                 {messagesElements}
                 <div>
-                    <textarea ref={text} value={props.state.userInputText} onChange={updateMessage}/>
+                    <textarea value={props.state.userInputText} onChange={updateMessage}/>
                     <button onClick={addMessage}>Send</button>
                 </div>
             </div>

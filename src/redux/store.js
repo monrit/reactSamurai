@@ -1,7 +1,6 @@
-const ADD_POST = "ADD-POST";
-const UPDATE_POST_INPUT = "UPDATE-POST-INPUT";
-const ADD_MESSAGE = "ADD-MESSAGE";
-const UPDATE_MESSAGE_INPUT = "UPDATE-MESSAGE-INPUT";
+import profileReducer from "./profileReducer";
+import messagesReducer from "./messagesReducer";
+import sidebarReducer from "./sidebarReducer";
 
 let store = {
     _state: {
@@ -48,45 +47,12 @@ let store = {
         this._subscriber = observer;
     },
     dispatch(action) {
-        if (action.type === ADD_POST) {
-            let text = this._state.profilePage.userInputText;
-            if (!text) {
-                return;
-            }
-            let post = {
-                id: 3,
-                message: text,
-                likes: 0
-            };
-            this._state.profilePage.userInputText = '';
-            this._state.profilePage.posts.push(post);
-            this._subscriber(this);
-        } else if (action.type === UPDATE_POST_INPUT) {
-            this._state.profilePage.userInputText = action.input;
-            this._subscriber(this);
-        } else if (action.type === ADD_MESSAGE) {
-            let text = this._state.messagesPage.userInputText;
-            if (!text) {
-                return;
-            }
-            let message = {
-                text: text,
-                id: 3
-            };
-            this._state.messagesPage.userInputText = '';
-            this._state.messagesPage.messages.push(message);
-            this._subscriber(this);
-        } else if (action.type === UPDATE_MESSAGE_INPUT) {
-            this._state.messagesPage.userInputText = action.input;
-            this._subscriber(this);
-        }
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.messagesPage = messagesReducer(this._state.messagesPage, action);
+        this._state.sidebar = sidebarReducer(this._state.sidebar, action);
+        this._subscriber(this);
     }
 }
-
-export const addPostActionCreator = () => ({ type: ADD_POST });
-export const updatePostInputActionCreator = (text) => ({ type: UPDATE_POST_INPUT, input: text });
-export const addMessageActionCreator = () => ({ type: ADD_MESSAGE });
-export const updateMessageInputActionCreator = (text) => ({ type: UPDATE_MESSAGE_INPUT, input: text });
 
 window.store = store;
 export default store;
