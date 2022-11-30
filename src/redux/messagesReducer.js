@@ -1,23 +1,45 @@
 const ADD_MESSAGE = "ADD-MESSAGE";
 const UPDATE_MESSAGE_INPUT = "UPDATE-MESSAGE-INPUT";
 
-function messagesReducer(state, action) {
+let initialState = {
+    people: [
+        { name: "Asya", id: 1 },
+        { name: "Dima", id: 2 },
+        { name: "Ostap", id: 3 },
+        { name: "Andrew", id: 4 },
+        { name: "Orest", id: 5 },
+        { name: "Vova", id: 6 }
+    ],
+    messages: [
+        { text: "Ekstein Chorny", id: 1 },
+        { text: "Blue Balls", id: 2 },
+        { text: "Chornovil", id: 3 },
+        { text: "Stus", id: 4 }
+    ],
+    userInputText: ""
+};
+
+function messagesReducer(state = initialState, action) {
     switch (action.type) {
         case ADD_MESSAGE:
-            let text = state.userInputText;
+            const text = state.userInputText;
             if (!text) {
                 return;
             }
-            let message = {
+            const message = {
                 text: text,
-                id: 3
+                id: 5
             };
-            state.userInputText = '';
-            state.messages.push(message);
-            return state;
+            return {
+                ...state,
+                userInputText: "",
+                messages: [...state.messages, message]
+            };
         case UPDATE_MESSAGE_INPUT:
-            state.userInputText = action.input;
-            return state;
+            return {
+                ...state,
+                userInputText: action.input
+            };
         default:
             return state;
     }

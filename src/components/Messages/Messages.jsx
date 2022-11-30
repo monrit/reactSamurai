@@ -1,22 +1,21 @@
-import React from "react";
-import { addMessageActionCreator, updateMessageInputActionCreator } from "../../redux/messagesReducer";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import style from "./Messages.module.css";
 
 function Messages(props) {
 
-    let peopleElements = props.state.people.map(item => <DialogItem name={item.name} id={item.id} />);
+    const state = props.messagesPage;
 
-    let messagesElements = props.state.messages.map(message => <Message message={message.text} />);
+    const peopleElements = state.people.map(item => <DialogItem name={item.name} id={item.id} />);
+    const messagesElements = state.messages.map(message => <Message message={message.text} />);
 
     function updateMessage(event) {
         const input = event.target.value;
-        props.dispatch( updateMessageInputActionCreator(input) );
+        props.updateMessage(input);
     }
 
     function addMessage() {
-        props.dispatch( addMessageActionCreator() );
+        props.addMessage();
     }
     return (
         <div className={style.dialogs}>
@@ -26,7 +25,7 @@ function Messages(props) {
             <div className={style.messages}>
                 {messagesElements}
                 <div>
-                    <textarea value={props.state.userInputText} onChange={updateMessage}/>
+                    <textarea value={state.userInputText} onChange={updateMessage}/>
                     <button onClick={addMessage}>Send</button>
                 </div>
             </div>

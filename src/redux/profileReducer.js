@@ -1,24 +1,36 @@
 const ADD_POST = "ADD-POST";
 const UPDATE_POST_INPUT = "UPDATE-POST-INPUT";
 
-function profileReducer(state, action) {
+let initialState = {
+    posts: [
+        { id: 1, message: "ШО Я ТУТА ЗДЕЛАВ", likes: 15 },
+        { id: 2, message: "ЄБАТЬ ШО Я НАРОБИВ", likes: 27 }
+    ],
+    userInputText: ""
+};
+
+function profileReducer(state = initialState, action) {
     switch (action.type) {
         case ADD_POST:
-            let text = state.userInputText;
+            const text = state.userInputText;
             if (!text) {
                 return;
             }
-            let post = {
+            const post = {
                 id: 3,
                 message: text,
                 likes: 0
             };
-            state.userInputText = '';
-            state.posts.push(post);
-            return state;
+            return {
+                ...state,
+                userInputText: "",
+                posts: [...state.posts, post]
+            };
         case UPDATE_POST_INPUT:
-            state.userInputText = action.input;
-            return state;
+            return {
+                ...state,
+                userInputText: action.input
+            };
         default:
             return state;
     }
