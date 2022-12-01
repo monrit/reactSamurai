@@ -6,8 +6,8 @@ function Messages(props) {
 
     const state = props.messagesPage;
 
-    const peopleElements = state.people.map(item => <DialogItem name={item.name} id={item.id} />);
-    const messagesElements = state.messages.map(message => <Message message={message.text} />);
+    const peopleElements = state.people.map(item => <DialogItem key={item.id} name={item.name} id={item.id} />);
+    const messagesElements = state.messages.map(message => <Message key={message.id} message={message.text} />);
 
     function updateMessage(event) {
         const input = event.target.value;

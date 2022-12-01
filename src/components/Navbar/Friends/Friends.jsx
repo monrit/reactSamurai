@@ -3,7 +3,8 @@ import Friend from "./Friend/Friend";
 import style from "./Friends.module.css";
 
 function Friends(props) {
-    const friends = props.friends.map(friend => <Friend avatar={friend.avatar} username={friend.username} />);
+    const friends = props.friends.map(friend => <Friend key={friend.id} avatar={friend.avatar} username={friend.username} />);
+
     const selectedLink = navData => style.friend + " " + (navData.isActive ? style.active : null);
     
     return (

@@ -5,7 +5,7 @@ function MyPosts(props) {
 
     const state = props.state;
 
-    const postsElements = state.posts.map(post => <Post message={post.message} likes={post.likes} />)
+    const postsElements = state.posts.map(post => <Post key={post.id} message={post.message} likes={post.likes} />)
 
     function changeInput(event) {
         const input = event.target.value;
