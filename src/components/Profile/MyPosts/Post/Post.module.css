@@ -1,5 +1,7 @@
 .item {
     color: greenyellow;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .item img {
@@ -8,4 +10,15 @@
     border-radius: 50%;
     object-fit: cover;
     image-rendering: pixelated;
+    margin-right: 10px;
+}
+
+.wrap {
+    display: flex;
+    Flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.likes {
+    width: 100%;
 }

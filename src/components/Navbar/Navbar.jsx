@@ -22,6 +22,9 @@ function Navbar(props) {
                 <NavLink to="/settings" className={selectedLink}>Settings</NavLink>
             </div>
             <div>
+                <NavLink to="/users" className={selectedLink}>Users</NavLink>
+            </div>
+            <div>
                 <Friends friends={props.state.friends}/>
             </div>
         </nav>

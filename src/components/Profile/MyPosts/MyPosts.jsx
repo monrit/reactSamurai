@@ -1,25 +1,29 @@
-import React from "react";
 import style from "./MyPosts.module.css";
 import Post from "./Post/Post";
 
 function MyPosts(props) {
 
-    let postsElements = props.posts.map(post => <Post message={post.message} likes={post.likes} />)
+    const state = props.state;
 
-    let text = React.createRef();
+    const postsElements = state.posts.map(post => <Post key={post.id} message={post.message} likes={post.likes} />)
 
-    function asyaILoveYou(event) {
-        props.addPost(text.current.value);
+    function changeInput(event) {
+        const input = event.target.value;
+        props.onInputChange(input);
+    }
+
+    function addPost() {
+        props.addPost();
     }
 
     return (
         <div className={style.postsBlock}>
             <h3>My Posts</h3>
             <div>
-                <textarea ref={text}></textarea>
+                <textarea onChange={changeInput} value={state.userInputText} />
             </div>
             <div>
-                <button onClick={asyaILoveYou}>add post</button>
+                <button onClick={addPost}>add post</button>
             </div>
             <div className={style.posts}>
                 {postsElements}
