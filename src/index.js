@@ -8,12 +8,13 @@ import store from './redux/reduxStore';
 import { Provider } from 'react-redux';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+//React.StrictMode забрав бо два рази рендерить і два запити на сервак шле, а вони обмежені.
 root.render(
-  <React.StrictMode>
+  <>
     <Provider store={store}>
       <App state={store.getState()} />
     </Provider>
-  </React.StrictMode>
+  </>
 );
 
 
