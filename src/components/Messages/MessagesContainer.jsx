@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { addMessageActionCreator, updateMessageInputActionCreator } from "../../redux/messagesReducer";
+import { addMessage, updateMessageInput } from "../../redux/messagesReducer";
 import Messages from "./Messages";
 
 const mapStateToProps = (state) => {
@@ -8,17 +8,9 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addMessage: () => {
-            dispatch( addMessageActionCreator() );
-        },
-        updateMessage: (text) => {
-            dispatch( updateMessageInputActionCreator(text) );
-        }
-    };
+const mapDispatchToProps = {
+    addMessage, 
+    updateMessageInput
 };
 
-const MessagesContainer = connect(mapStateToProps, mapDispatchToProps)(Messages);
-
-export default MessagesContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(Messages);

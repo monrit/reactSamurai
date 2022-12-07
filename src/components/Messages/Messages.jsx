@@ -11,7 +11,7 @@ function Messages(props) {
 
     function updateMessage(event) {
         const input = event.target.value;
-        props.updateMessage(input);
+        props.updateMessageInput(input);
     }
 
     function addMessage() {

@@ -45,7 +45,7 @@ function messagesReducer(state = initialState, action) {
     }
 }
 
-export const addMessageActionCreator = () => ({ type: ADD_MESSAGE });
-export const updateMessageInputActionCreator = (text) => ({ type: UPDATE_MESSAGE_INPUT, input: text });
+export const addMessage = () => ({ type: ADD_MESSAGE });
+export const updateMessageInput = (text) => ({ type: UPDATE_MESSAGE_INPUT, input: text });
 
 export default messagesReducer;

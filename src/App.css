@@ -12,4 +12,6 @@
 .my-app-content {
     grid-area: cont;
     background-color: cornflowerblue;
+    min-height: 100vh;
+    height: auto;
 }

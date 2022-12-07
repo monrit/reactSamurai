@@ -9,7 +9,7 @@ function MyPosts(props) {
 
     function changeInput(event) {
         const input = event.target.value;
-        props.onInputChange(input);
+        props.updatePostInput(input);
     }
 
     function addPost() {
