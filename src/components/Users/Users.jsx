@@ -1,6 +1,8 @@
 import style from "./Users.module.css";
 import profilePicture from "../../assets/images/profilePicture.jpg";
 import Preloader from "../common/Preloader/Preloader";
+import { NavLink } from "react-router-dom";
+import { useTransition } from "react";
 
 function Users(props) {
 
@@ -19,11 +21,13 @@ function Users(props) {
                     <span key={page} onClick={() => props.onPageChange(page)} className={props.currentPage === page ? style.selected : undefined}>{page}</span>
                 );
             })}
-            {props.isFetching ? <Preloader />: props.users.map(user => {
+            {props.isFetching ? <Preloader /> : props.users.map(user => {
                 return (
                     <div key={user.id} className={style.userFrame}>
                         <div>
-                            <img src={user.photos.small || profilePicture} alt={user.name} className={style.image} width="50" height="50" />
+                            <NavLink to={`/profile/${user.id}`}>
+                                <img src={user.photos.small || profilePicture} alt={user.name} className={style.image} width="50" height="50" />
+                            </NavLink>
                             {user.followed
                                 ? <button onClick={() => props.unfollow(user.id)}>UNFOLLOW</button>
                                 : <button onClick={() => props.follow(user.id)}>FOLLOW</button>}

@@ -1,12 +1,14 @@
 const ADD_POST = "ADD-POST";
 const UPDATE_POST_INPUT = "UPDATE-POST-INPUT";
+const SET_USER_PROFILE = "SET-USER-PROFILE";
 
 let initialState = {
     posts: [
-        { id: 1, message: "ШО Я ТУТА ЗДЕЛАВ", likes: 15 },
-        { id: 2, message: "ЄБАТЬ ШО Я НАРОБИВ", likes: 27 }
+        { id: 1, message: "На могилі моїй посадіть молоду яворииинуу", likes: 15 },
+        { id: 2, message: "First post", likes: 27 }
     ],
-    userInputText: ""
+    userInputText: "",
+    profile: null
 };
 
 function profileReducer(state = initialState, action) {
@@ -31,6 +33,11 @@ function profileReducer(state = initialState, action) {
                 ...state,
                 userInputText: action.input
             };
+        case SET_USER_PROFILE:
+            return {
+                ...state,
+                profile: action.profile
+            };
         default:
             return state;
     }
@@ -38,5 +45,6 @@ function profileReducer(state = initialState, action) {
 
 export const addPost = () => ({ type: ADD_POST });
 export const updatePostInput = (text) => ({ type: UPDATE_POST_INPUT, input: text });
+export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
 
 export default profileReducer;
