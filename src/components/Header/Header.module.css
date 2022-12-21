@@ -1,4 +1,3 @@
-
 .header {
     grid-area: header;
     background-color: green;
@@ -6,4 +5,13 @@
 
 .header img {
     width: 20px;
+}
+
+.loginContainer {
+    float: right;
+}
+
+.login {
+    color: white;
+    text-decoration: none;
 }
