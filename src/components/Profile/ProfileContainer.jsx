@@ -1,14 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setUserProfile } from "../../redux/profileReducer";
+import { getUser } from "../../redux/profileReducer";
 import Profile from "./Profile";
-import { profileAPI } from "../../api/api";
 //withRouter analog! v6 router-dom uses hooks
 import {
     useLocation,
     useNavigate,
     useParams,
 } from "react-router-dom";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 
 // wrapper to use react router's v6 hooks in class component(to use HOC pattern, like in router v5)
 function withRouter(Component) {
@@ -33,12 +33,16 @@ class ProfileContainer extends React.Component {
     componentDidMount() {
         let userId = this.props.router.params.userId;
         if (!userId) {
-            userId = 2;
+            const interval = setInterval(() => {
+                if (this.props.id) {
+                    userId = this.props.id;
+                    clearInterval(interval);
+                    this.props.getUser(userId);
+                }
+            }, 100);
+        } else {
+            this.props.getUser(userId);
         }
-        profileAPI.getUser(userId)
-            .then(data => {
-                this.props.setUserProfile(data);
-            });
     }
 
     render() {
@@ -50,8 +54,9 @@ class ProfileContainer extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        profile: state.profilePage.profile
+        profile: state.profilePage.profile,
+        id: state.auth.id
     }
 }
 
-export default connect(mapStateToProps, { setUserProfile })(withRouter(ProfileContainer));
+export default withAuthRedirect( connect(mapStateToProps, { getUser })(withRouter(ProfileContainer)) );

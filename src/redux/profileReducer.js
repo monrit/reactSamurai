@@ -1,3 +1,5 @@
+import { profileAPI } from "../api/api";
+
 const ADD_POST = "ADD-POST";
 const UPDATE_POST_INPUT = "UPDATE-POST-INPUT";
 const SET_USER_PROFILE = "SET-USER-PROFILE";
@@ -19,7 +21,7 @@ function profileReducer(state = initialState, action) {
                 return;
             }
             const post = {
-                id: 3,
+                id: 3, //needs solution
                 message: text,
                 likes: 0
             };
@@ -46,5 +48,12 @@ function profileReducer(state = initialState, action) {
 export const addPost = () => ({ type: ADD_POST });
 export const updatePostInput = (text) => ({ type: UPDATE_POST_INPUT, input: text });
 export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
+
+export const getUser = (userId) => (dispatch) => {
+    profileAPI.getUser(userId)
+        .then(data => {
+            dispatch( setUserProfile(data) );
+        });
+};
 
 export default profileReducer;

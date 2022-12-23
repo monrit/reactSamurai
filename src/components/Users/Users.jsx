@@ -2,7 +2,6 @@ import style from "./Users.module.css";
 import profilePicture from "../../assets/images/profilePicture.jpg";
 import Preloader from "../common/Preloader/Preloader";
 import { NavLink } from "react-router-dom";
-import { usersAPI } from "../../api/api";
 
 function Users(props) {
 
@@ -29,22 +28,8 @@ function Users(props) {
                                 <img src={user.photos.small || profilePicture} alt={user.name} className={style.image} width="50" height="50" />
                             </NavLink>
                             {user.followed
-                                ? <button onClick={() => {
-                                    usersAPI.unfollow(user.id)
-                                        .then(data => {
-                                            if (data.resultCode === 0) {
-                                                props.unfollow(user.id);
-                                            }
-                                        });
-                                }}>UNFOLLOW</button>
-                                : <button onClick={() => {
-                                    usersAPI.follow(user.id)
-                                        .then(data => {
-                                            if (data.resultCode === 0) {
-                                                props.follow(user.id);
-                                            }
-                                        });
-                                }}>FOLLOW</button>}
+                                ? <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {props.unfollow(user.id)}}>UNFOLLOW</button>
+                                : <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {props.follow(user.id)}}>FOLLOW</button>}
                         </div>
                         <div>
                             <div>

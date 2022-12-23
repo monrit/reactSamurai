@@ -10,24 +10,24 @@ const axiosInstance = axios.create({
 
 export const usersAPI = {
     async getUsers(currentPage = 1, pageSize = 5) {
-        return await ( await axiosInstance.get(`users?page=${currentPage}&count=${pageSize}`) ).data;
+        return ( await axiosInstance.get(`users?page=${currentPage}&count=${pageSize}`) ).data;
     },
     async follow(userId) {
-        return await ( await axiosInstance.post(`follow/${userId}`) ).data;
+        return ( await axiosInstance.post(`follow/${userId}`) ).data;
     },
     async unfollow(userId) {
-        return await ( await axiosInstance.delete(`follow/${userId}`) ).data
+        return ( await axiosInstance.delete(`follow/${userId}`) ).data
     }
 };
 
 export const authAPI = {
     async getAuth() {
-        return await ( await axiosInstance.get("auth/me") ).data;
+        return ( await axiosInstance.get("auth/me") ).data;
     }
 };
 
 export const profileAPI = {
     async getUser(userId) {
-        return await ( await axiosInstance.get(`profile/${userId}`) ).data;
+        return ( await axiosInstance.get(`profile/${userId}`) ).data;
     }
 };

@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { addMessage, updateMessageInput } from "../../redux/messagesReducer";
 import Messages from "./Messages";
 
@@ -13,4 +14,4 @@ const mapDispatchToProps = {
     updateMessageInput
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Messages);
+export default withAuthRedirect( connect(mapStateToProps, mapDispatchToProps)(Messages) );
