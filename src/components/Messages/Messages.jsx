@@ -25,7 +25,7 @@ function Messages(props) {
             <div className={style.messages}>
                 {messagesElements}
                 <div>
-                    <textarea value={state.userInputText} onChange={updateMessage}/>
+                    <textarea value={state.userInputText} onChange={updateMessage} />
                     <button onClick={addMessage}>Send</button>
                 </div>
             </div>
