@@ -23,6 +23,16 @@ export const usersAPI = {
 export const authAPI = {
     async getAuth() {
         return ( await axiosInstance.get("auth/me") ).data;
+    },
+    async login(email, password, rememberMe) {
+        return ( await axiosInstance.post("auth/login", {
+            email,
+            password,
+            rememberMe
+        }) ).data;
+    },
+    async logout() {
+        return (await axiosInstance.delete("auth/login")).data;
     }
 };
 

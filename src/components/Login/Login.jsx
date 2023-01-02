@@ -1,5 +1,15 @@
+import { Navigate } from "react-router-dom";
+import LoginForm from "./LoginForm/LoginForm";
+
 function Login(props) {
-    return <h1>LOGIN</h1>
+
+    if (props.isAuth) {
+        return <Navigate to="/profile"/>
+    }
+
+    return (
+        <LoginForm {...props}/>
+    );
 }
 
 export default Login;

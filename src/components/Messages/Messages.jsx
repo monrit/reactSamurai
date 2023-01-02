@@ -1,5 +1,6 @@
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
+import MessageForm from "./MessageForm/MessageForm";
 import style from "./Messages.module.css";
 
 function Messages(props) {
@@ -9,13 +10,8 @@ function Messages(props) {
     const peopleElements = state.people.map(item => <DialogItem key={item.id} name={item.name} id={item.id} />);
     const messagesElements = state.messages.map(message => <Message key={message.id} message={message.text} />);
 
-    function updateMessage(event) {
-        const input = event.target.value;
-        props.updateMessageInput(input);
-    }
-
-    function addMessage() {
-        props.addMessage();
+    function addMessage(text) {
+        props.addMessage(text);
     }
     return (
         <div className={style.dialogs}>
@@ -24,10 +20,7 @@ function Messages(props) {
             </div>
             <div className={style.messages}>
                 {messagesElements}
-                <div>
-                    <textarea value={state.userInputText} onChange={updateMessage} />
-                    <button onClick={addMessage}>Send</button>
-                </div>
+                <MessageForm addMessage={addMessage}/>
             </div>
         </div>
     );

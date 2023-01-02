@@ -4,7 +4,7 @@ import style from "./DialogItem.module.css";
 function DialogItem(props) {
     const selectedLink = navData => style.item + " " + (navData.isActive ? style.active: null); 
     return (
-        <div className={style.item + " " + style.active}>
+        <div>
             <NavLink to={"/messages/" + props.id} className={selectedLink}>{props.name}</NavLink>
         </div>
     );

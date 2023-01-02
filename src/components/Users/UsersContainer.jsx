@@ -45,7 +45,8 @@ function mapStateToProps(state) {
         totalUsers: state.usersPage.totalUsers,
         pageSize: state.usersPage.pageSize,
         isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress
+        followingInProgress: state.usersPage.followingInProgress,
+        isAuth: state.auth.isAuth
     };
 }
 
