@@ -27,50 +27,57 @@ function LoginForm(props) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <label>Email:
-                <br />
-                <input
-                    {...register("email", {
-                        required: "This field is requiered.",
-                        minLength: {
-                            value: 5,
-                            message: "Your login must be at least 5 symbols long."
-                        }
-                    })}
-                    onFocus={() => clearErrors(["email", "server"])}
-                />
-            </label>
-            <br />
-            <div className={style.errorMessage}>
-                {errors.email && <span>{errors.email?.message || "Error!"}</span>}
+            <div>
+                <div>
+                    <label>Email:
+                        <br />
+                        <input
+                            {...register("email", {
+                                required: "This field is requiered.",
+                                minLength: {
+                                    value: 5,
+                                    message: "Your login must be at least 5 symbols long."
+                                }
+                            })}
+                            onFocus={() => clearErrors(["email", "server"])}
+                            placeholder="Email"
+                        />
+                        <div className={style.errorMessage}>
+                            {errors.email && <span>{errors.email?.message || "Error!"}</span>}
+                        </div>
+                    </label>
+                </div>
             </div>
-            <label>Password:
-                <br />
-                <input
-                    type="password"
-                    {...register("password", {
-                        required: "This field is requiered."
-                    })}
-                    onFocus={() => clearErrors(["password", "server"])}
-                />
-            </label>
-            <br />
-            <div className={style.errorMessage}>
-                {errors.password && <span>{errors.password.message || "Error!"}</span>}
+            <div>
+                <label>Password:
+                    <br />
+                    <input
+                        type="password"
+                        {...register("password", {
+                            required: "This field is requiered."
+                        })}
+                        onFocus={() => clearErrors(["password", "server"])}
+                        placeholder="Password"
+                    />
+                    <div className={style.errorMessage}>
+                        {errors.password && <span>{errors.password.message || "Error!"}</span>}
+                    </div>
+                </label>
             </div>
-            <label>
-                <input
-                    type="checkbox"
-                    {...register("rememberMe")}
-                /> Remember me
-            </label>
-            <br />
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        {...register("rememberMe")}
+                    />Remember me
+                </label>
+            </div>
             {errors.server
                 &&
                 <div className={style.errorMessage}>
                     <span>{errors.server.message}</span>
                 </div>}
-            <input type="submit" disabled={!isValid} value="Log in" />
+            <input className={style.button} type="submit" disabled={!isValid} value="Log in" />
         </form>
     );
 }

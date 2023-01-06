@@ -4,9 +4,6 @@ function MyPostForm(props) {
 
     const {
         register,
-        formState: {
-            errors
-        },
         handleSubmit,
         reset
     } = useForm({

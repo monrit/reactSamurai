@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 
 class ProfileStatusC extends React.Component {
 
@@ -56,14 +57,25 @@ class ProfileStatusC extends React.Component {
 function ProfileStatus(props) {
 
     const [editMode, setEditMode] = useState(false);
-    const [status, setStatus] = useState(props.status ? props.status : "set status");
+    const [status, setStatus] = useState(props.status);
 
-    function editClick() {
-        setEditMode(!editMode);
+    useEffect(() => {
+        setStatus(props.status);
+    }, [props.status]);
+
+    function activateEditMode() {
+        setEditMode(true);
+    }
+
+    function deactivateEditMode() {
+        setEditMode(false);
+        if (status !== props.status) {
+            props.updateUserStatus(status);
+        }
     }
 
     function changeStatus(e) {
-        setStatus(e.target.value);
+        setStatus(e.currentTarget.value);
     }
 
     return (
@@ -71,14 +83,14 @@ function ProfileStatus(props) {
             {editMode
                 ?
                 <div>
-                    <input autoFocus value={status} onChange={changeStatus} onBlur={editClick} />
+                    <input autoFocus value={status} onChange={changeStatus} onBlur={deactivateEditMode} />
                 </div>
                 :
-                <div onClick={editClick}>
-                    <span>{status}</span>
+                <div onDoubleClick={activateEditMode}>
+                    <span>{props.status}</span>
                 </div>}
         </div>
     );
 }
 
-export default ProfileStatusC;
+export default ProfileStatus;

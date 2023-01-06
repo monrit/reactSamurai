@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 import { initializeApp } from "./redux/appReducer";
 import Preloader from "./components/common/Preloader/Preloader";
 import { compose } from "redux";
-import { withRouter } from "./hoc/withRouter";
 
 class App extends React.Component {
     componentDidMount() {
@@ -50,10 +49,11 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        initalized: state.app.initialized
+        initalized: state.app.initialized,
+        isAuth: state.auth.isAuth
     };
 };
 
-export default  compose(
+export default compose(
     connect(mapStateToProps, { initializeApp })
 )(App);
