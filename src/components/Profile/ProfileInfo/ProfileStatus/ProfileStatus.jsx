@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 class ProfileStatusC extends React.Component {
 
@@ -27,7 +28,7 @@ class ProfileStatusC extends React.Component {
         this.setState({
             status: e.currentTarget.value
         })
-    } 
+    }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.status !== this.props.status) {

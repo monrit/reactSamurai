@@ -1,45 +1,15 @@
 import style from "./Users.module.css";
-import profilePicture from "../../assets/images/profilePicture.jpg";
 import Preloader from "../common/Preloader/Preloader";
-import { NavLink } from "react-router-dom";
+import Paginator from "../common/Paginator/Paginator";
+import User from "./User/User";
 
-function Users(props) {
-
-    const numOfPages = Math.ceil(props.totalUsers / props.pageSize);
-
-    const buttons = [];
-
-    for (let i = 1; i <= numOfPages; i++) {
-        buttons.push(i);
-    }
-
+function Users({onPageChange, currentPage, totalUsers, pageSize, isFetching, users, followingInProgress, follow, unfollow}) {
     return (
         <div>
-            {buttons.map(page => {
+            <Paginator onPageChange={onPageChange} currentPage={currentPage} totalUsers={totalUsers} pageSize={pageSize} />
+            {isFetching ? <Preloader /> : users.map(user => {
                 return (
-                    <span key={page} onClick={() => props.onPageChange(page)} className={props.currentPage === page ? style.selected : undefined}>{page}</span>
-                );
-            })}
-            {props.isFetching ? <Preloader /> : props.users.map(user => {
-                return (
-                    <div key={user.id} className={style.userFrame}>
-                        <div>
-                            <NavLink to={`/profile/${user.id}`}>
-                                <img src={user.photos.small || profilePicture} alt={user.name} className={style.image} width="50" height="50" />
-                            </NavLink>
-                            {user.followed
-                                ? <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {props.unfollow(user.id)}}>UNFOLLOW</button>
-                                : <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {props.follow(user.id)}}>FOLLOW</button>}
-                        </div>
-                        <div>
-                            <div>
-                                {user.name}
-                            </div>
-                            <div>
-                                STATUS: {user.status}
-                            </div>
-                        </div>
-                    </div>
+                    <User key={user.id} user={user} follow={follow} unfollow={unfollow} followingInProgress={followingInProgress}/>
                 );
             })}
         </div>

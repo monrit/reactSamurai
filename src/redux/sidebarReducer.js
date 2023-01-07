@@ -6,7 +6,7 @@ let initialState = {
     ]
 };
 
-function sidebarReducer(state = initialState, action) {
+function sidebarReducer(state = initialState, action = {}) {
     return state;
 }
 

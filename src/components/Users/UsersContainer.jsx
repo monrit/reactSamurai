@@ -8,11 +8,13 @@ import { getCurrentPageSelector, getFollowingInProgressSelector, getIsAuthSelect
 
 class UsersContainer extends React.Component {
     componentDidMount() {
-        this.props.getUsers(this.props.currentPage, this.props.pageSize);
+        const {currentPage, pageSize} = this.props;
+        this.props.getUsers(currentPage, pageSize);
     }
 
     onPageChange = (currentPage) => {
-        this.props.getUsers(currentPage, this.props.pageSize);
+        const {pageSize} = this.props;
+        this.props.getUsers(currentPage, pageSize);
     };
 
     follow = (userId) => {
