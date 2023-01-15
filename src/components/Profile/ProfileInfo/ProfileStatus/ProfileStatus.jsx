@@ -87,8 +87,8 @@ function ProfileStatus(props) {
                     <input autoFocus value={status} onChange={changeStatus} onBlur={deactivateEditMode} />
                 </div>
                 :
-                <div onDoubleClick={activateEditMode}>
-                    <span>{props.status}</span>
+                <div>
+                    <span onDoubleClick={activateEditMode}>{props.status}</span>
                 </div>}
         </div>
     );

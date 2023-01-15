@@ -13,7 +13,7 @@ const initialState = {
     users: [],
     currentPage: 1,
     totalUsers: 100, //should be 0 and be taken from server, you have this feature in getUsers thunk creator
-    pageSize: 5,
+    pageSize: 10,
     isFetching: false,
     followingInProgress: []
 };
@@ -23,12 +23,12 @@ function usersReducer(state = initialState, action = {}) {
         case FOLLOW:
             return {
                 ...state,
-                users: changePropsInObjArray(state.users, "id", action.userId, {followed: true})
+                users: changePropsInObjArray(state.users, "id", action.userId, { followed: true })
             };
         case UNFOLLOW:
             return {
                 ...state,
-                users: changePropsInObjArray(state.users, "id", action.userId, {followed: false})
+                users: changePropsInObjArray(state.users, "id", action.userId, { followed: false })
             };
         case SET_USERS:
             return {
@@ -77,8 +77,7 @@ export const getUsers = (currentPage, pageSize) => async (dispatch) => {
     const data = await usersAPI.getUsers(currentPage, pageSize);
     dispatch(setUsers(data.items));
     dispatch(setIsFetching(false));
-    //4400+ pages will apear !!NEEDS SOLUTION
-    //dispatch( setTotalUsers(data.totalCount) );
+    dispatch(setTotalUsers(data.totalCount));
 };
 
 async function followUnfollowFlow(userId, apiMethod, dispatch, action) {

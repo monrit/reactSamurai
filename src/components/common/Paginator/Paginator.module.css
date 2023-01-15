@@ -1,3 +1,14 @@
 .selected {
     font-weight: bold;
+    border: 2px solid black !important;
+}
+
+.page {
+    width: 40px;
+    border: 2px solid gray;
+    margin: 1px;
+}
+
+.pages {
+    margin-top: 10px;
 }

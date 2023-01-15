@@ -6,7 +6,7 @@ import User from "./User/User";
 function Users({onPageChange, currentPage, totalUsers, pageSize, isFetching, users, followingInProgress, follow, unfollow}) {
     return (
         <div>
-            <Paginator onPageChange={onPageChange} currentPage={currentPage} totalUsers={totalUsers} pageSize={pageSize} />
+            <Paginator onPageChange={onPageChange} currentPage={currentPage} totalItems={totalUsers} pageSize={pageSize} />
             {isFetching ? <Preloader /> : users.map(user => {
                 return (
                     <User key={user.id} user={user} follow={follow} unfollow={unfollow} followingInProgress={followingInProgress}/>
