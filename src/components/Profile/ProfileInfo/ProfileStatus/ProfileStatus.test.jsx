@@ -1,9 +1,8 @@
 import { create } from "react-test-renderer";
-import ProfileStatus from "./ProfileStatus";
+import { ProfileStatusWithoutHookForm as ProfileStatus} from "./ProfileStatus";
 
 
 const status = "Some nice status";
-//review this test again
 describe("Status component", () => {
     test("span should be displayed", () => {
         const component = create(<ProfileStatus status={status}/>);
@@ -25,7 +24,7 @@ describe("Status component", () => {
         expect(span.children).toEqual([status]);
     });
     test("input should be displayed in editMode instead of span", () => {
-        const component = create(<ProfileStatus status={status}/>);
+        const component = create(<ProfileStatus status={status} canEditStatus={true}/>);
         const root = component.root;
         const span = root.findByType("span");
         span.props.onDoubleClick();
@@ -34,7 +33,7 @@ describe("Status component", () => {
         }).not.toThrow();
     });
     test("status should be changed", () => {
-        const component = create(<ProfileStatus status={status}/>);
+        const component = create(<ProfileStatus status={status} canEditStatus={true}/>);
         const root = component.root;
         const span = root.findByType("span");
         span.props.onDoubleClick();
@@ -44,7 +43,7 @@ describe("Status component", () => {
     });
     test("callback should be called", () => {
         const callback = jest.fn();
-        const component = create(<ProfileStatus status={status} updateUserStatus={callback}/>);
+        const component = create(<ProfileStatus status={status} updateUserStatus={callback} canEditStatus={true}/>);
         const root = component.root;
         const span = root.findByType("span");
         span.props.onDoubleClick();

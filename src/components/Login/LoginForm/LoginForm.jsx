@@ -17,7 +17,7 @@ function LoginForm(props) {
     });
 
     const onSubmit = (data) => {
-        props.login(data.email, data.password, data.rememberMe, setError);
+        props.login(data.email, data.password, data.rememberMe, setError, data.captcha);
         reset({
             email: "",
             password: "",
@@ -64,6 +64,15 @@ function LoginForm(props) {
                     </div>
                 </label>
             </div>
+            {props.captchaUrl &&
+                <div>
+                    <img src={props.captchaUrl} alt="captcha"/>
+                    <input {...register("captcha", {
+                        required: true,
+                        minLength: 1
+                    })} />
+                </div>
+            }
             <div>
                 <label>
                     <input

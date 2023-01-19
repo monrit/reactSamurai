@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import style from "./ProfileStatus.module.css";
 
-class ProfileStatusC extends React.Component {
+export class ProfileStatusC extends React.Component {
 
     state = {
         editMode: false,
@@ -56,6 +57,54 @@ class ProfileStatusC extends React.Component {
 }
 
 function ProfileStatus(props) {
+    //THIS REACT HOOK FORM FAILS TESTS IDK HOW TO TEST REACT HOOK FORM AND HOOKS
+    const [editMode, setEditMode] = useState(false);
+    const [status, setStatus] = useState(props.status);
+    const {
+        register,
+        handleSubmit,
+    } = useForm({
+        mode: "onBlur",
+        defaultValues: {
+            status: status
+        }
+    })
+
+    useEffect(() => {
+        setStatus(props.status);
+    }, [props.status]);
+
+    function activateEditMode() {
+        if (props.canEditStatus) {
+            setEditMode(true);
+        }
+    }
+
+    function deactivateEditMode(data) {
+        setEditMode(false);
+        if (data.status !== status) {
+            props.updateUserStatus(data.status);
+        }
+    }
+
+    return (
+        <div>
+            {editMode
+                ?
+                <form onBlur={handleSubmit(deactivateEditMode)}>
+                    <input {...register("status", {
+                        required: true,
+                    })} autoFocus className={style.status}/>
+                </form>
+                :
+                <div>
+                    <span onDoubleClick={activateEditMode}><b>Status:</b> {props.status}</span>
+                </div>}
+        </div>
+    );
+}
+
+export function ProfileStatusWithoutHookForm(props) {
 
     const [editMode, setEditMode] = useState(false);
     const [status, setStatus] = useState(props.status);
@@ -65,7 +114,9 @@ function ProfileStatus(props) {
     }, [props.status]);
 
     function activateEditMode() {
-        setEditMode(true);
+        if (props.canEditStatus) {
+            setEditMode(true);
+        }
     }
 
     function deactivateEditMode() {
