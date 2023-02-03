@@ -1,6 +1,7 @@
 import { profileAPI } from "../api/api";
 import { globalError } from "./appReducer";
 import { PostType, ProfileType, PhotosType } from "../types/types";
+import { InputsType } from "../components/Profile/ProfileInfo/ProfileInfoForm/ProfileInfoForm";
 const ADD_POST = "profile/ADD-POST";
 const SET_USER_PROFILE = "profile/SET-USER-PROFILE";
 const RESET_PROFILE_STATE = "profile/RESET-PROFILE-STATE";
@@ -149,7 +150,7 @@ export const updateUserStatus = (status: string) => async (dispatch: any) => {
     }
 };
 
-export const updateProfilePicture = (picture: any) => async (dispatch: any) => {
+export const updateProfilePicture = (picture: File) => async (dispatch: any) => {
     try {
         const data = await profileAPI.updateProfilePicture(picture);
         if (data.resultCode === 0) {
@@ -160,7 +161,7 @@ export const updateProfilePicture = (picture: any) => async (dispatch: any) => {
     }
 };
 
-export const updateProfileInfo = (profileData: ProfileType, setError: any, setEditMode: any) => async (dispatch: any, getState: any) => {
+export const updateProfileInfo = (profileData: InputsType, setError: any, setEditMode: any) => async (dispatch: any, getState: any) => {
     try {
         const data = await profileAPI.updateProfileInfo(profileData);
         if (data.resultCode === 0) {

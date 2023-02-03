@@ -15,11 +15,11 @@ type MapStateType = {
     router?: any
 };
 type DispathStateToPropsType = {
-    getUser: (id: number) => void,
-    getUserStatus: (id: number) => void,
-    updateUserStatus: (text: string) => void,
-    updateProfilePicture: (photo: File) => void,
-    updateProfileInfo: (profileInfo: InputsType) => void 
+    getUser: (userId: number) => void,
+    getUserStatus: (userId: number) => void,
+    updateUserStatus: (status: string) => void,
+    updateProfilePicture: (picture: File) => void,
+    updateProfileInfo: (profileData: InputsType, setError: any, setEditModeFalse: () => void) => void
 };
 type PropsType = MapStateType & DispathStateToPropsType;
 
@@ -68,6 +68,6 @@ function mapStateToProps(state: AppStateType): MapStateType {
 }
 
 export default compose(
-    connect(mapStateToProps, { getUser, getUserStatus, updateUserStatus, updateProfilePicture, updateProfileInfo }),
+    connect<MapStateType, DispathStateToPropsType, null, AppStateType>(mapStateToProps, { getUser, getUserStatus, updateUserStatus, updateProfilePicture, updateProfileInfo }),
     withRouter
 )(ProfileContainer);

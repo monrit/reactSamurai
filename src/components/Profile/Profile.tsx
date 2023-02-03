@@ -10,7 +10,7 @@ export type PropsType = {
     isOwner: boolean,
     status: string | null,
     updateUserStatus: (status: string) => void,
-    updateProfilePicture: (img: File) => void,
+    updateProfilePicture: (picture: File) => void,
     updateProfileInfo: (profileInfo: InputsType, setError: any, setEditModeFalse: () => void) => void
 };
 
