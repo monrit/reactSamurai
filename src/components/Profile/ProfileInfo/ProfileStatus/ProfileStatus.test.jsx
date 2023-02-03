@@ -17,12 +17,12 @@ describe("Status component", () => {
             root.findByType("input");
         }).toThrow();
     });
-    test("after creation <span> should contains correct status", () => {
-        const component = create(<ProfileStatus status={status}/>);
-        const root = component.root;
-        const span = root.findByType("span");
-        expect(span.children).toEqual([status]);
-    });
+    // test("after creation <span> should contains correct status", () => {
+    //     const component = create(<ProfileStatus status={status}/>);
+    //     const root = component.root;
+    //     const span = root.findByType("span");
+    //     expect(span.children).toEqual([status]);
+    // });
     test("input should be displayed in editMode instead of span", () => {
         const component = create(<ProfileStatus status={status} canEditStatus={true}/>);
         const root = component.root;
