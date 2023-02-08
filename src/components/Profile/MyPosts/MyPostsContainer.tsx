@@ -1,8 +1,9 @@
 import { connect } from "react-redux";
 import { AppStateType } from "../../../redux/reduxStore";
 import { PostType } from "../../../types/types";
-import { addPost, like, deletePost } from "./../../../redux/profileReducer";
+import { actions as profileActions } from "./../../../redux/profileReducer";
 import MyPosts from "./MyPosts";
+const { addPost, like, deletePost } = profileActions;
 
 type MapStateType = {
     posts: Array<PostType>,

@@ -1,13 +1,17 @@
+import { InferActionsTypes } from "./reduxStore";
+
 const ADD_MESSAGE = "messages/ADD-MESSAGE";
 
 type PersonType = {
     name: string,
     id: number
 };
+
 type MessageType = {
     text: string,
     id: number
 };
+
 export type InitialStateType = {
     people: Array<PersonType>,
     messages: Array<MessageType>
@@ -30,7 +34,7 @@ const initialState: InitialStateType = {
     ]
 };
 
-type ActionType = AddMessageActionType;
+type ActionType = InferActionsTypes<typeof actions>;
 
 function messagesReducer(state = initialState, action: ActionType): InitialStateType {
     switch (action.type) {
@@ -48,10 +52,8 @@ function messagesReducer(state = initialState, action: ActionType): InitialState
     }
 }
 
-type AddMessageActionType = {
-    type: typeof ADD_MESSAGE,
-    text: string
+export const actions = {
+    addMessage: (text: string) => ({ type: ADD_MESSAGE, text } as const)
 };
-export const addMessage = (text: string): AddMessageActionType => ({ type: ADD_MESSAGE, text });
 
 export default messagesReducer;

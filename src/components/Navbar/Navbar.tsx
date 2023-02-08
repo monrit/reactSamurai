@@ -1,10 +1,10 @@
 import style from "./Navbar.module.css";
 import { NavLink } from "react-router-dom";
-import Friends from "./Friends/Friends";
 import { InitialStateType } from "../../redux/sidebarReducer";
 import { FC } from "react";
 import { ClassNameFuncObjType } from "../../types/types";
 import classNames from "classnames";
+import Friends from "./NavbarFriends/NavbarFriends";
 
 type PropsType = InitialStateType;
 

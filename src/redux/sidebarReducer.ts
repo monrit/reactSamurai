@@ -3,6 +3,7 @@ type FriendType = {
     username: string,
     avatar: string
 };
+
 export type InitialStateType = {
     friends: Array<FriendType>
 };
@@ -15,7 +16,7 @@ const initialState: InitialStateType = {
     ]
 };
 
-type ActionType = any; //TEMPORARY!!!
+type ActionType = any;
 
 function sidebarReducer(state = initialState, action: ActionType): InitialStateType {
     return state;

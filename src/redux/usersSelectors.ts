@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 import { AppStateType } from "./reduxStore"
 
 export const getUsersSelector = (state: AppStateType) => state.usersPage.users;
-export const someSmartUsersSelectorFromReselect = createSelector(getUsersSelector, (users) => {
+export const someSmartUsersSelectorFromReselect = createSelector(getUsersSelector, users => {
     //return users.someArrMethodThatReturnsANewArray...
 });
 export const getCurrentPageSelector = (state: AppStateType) => state.usersPage.currentPage;

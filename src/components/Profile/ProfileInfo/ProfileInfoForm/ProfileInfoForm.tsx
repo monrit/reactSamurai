@@ -37,14 +37,14 @@ const ProfileInfoForm: FC<PropsType> = ({ profile, updateProfilePicture, updateP
             lookingForAJobDescription: profile.lookingForAJobDescription,
             aboutMe: profile.aboutMe,
             contacts: {
-                facebook: profile.contacts.facebook,
-                website: profile.contacts.website,
-                vk: profile.contacts.vk,
-                twitter: profile.contacts.twitter,
-                instagram: profile.contacts.instagram,
-                youtube: profile.contacts.youtube,
-                github: profile.contacts.github,
-                mainLink: profile.contacts.mainLink
+                facebook: profile.contacts.facebook || "",
+                website: profile.contacts.website || "",
+                vk: profile.contacts.vk || "",
+                twitter: profile.contacts.twitter || "",
+                instagram: profile.contacts.instagram || "",
+                youtube: profile.contacts.youtube || "",
+                github: profile.contacts.github || "",
+                mainLink: profile.contacts.mainLink || ""
             }
         }
     });
@@ -75,30 +75,12 @@ const ProfileInfoForm: FC<PropsType> = ({ profile, updateProfilePicture, updateP
                 </div>
                 <div>
                     <b>Contacts: </b>
-                    <div className={style.contact}><b>Facebook:</b>
-                            <input {...register(`contacts.facebook`)} />
-                    </div>
-                    <div className={style.contact}><b>Website:</b>
-                            <input {...register(`contacts.website`)} />
-                    </div>
-                    <div className={style.contact}><b>Vk:</b>
-                            <input {...register(`contacts.vk`)} />
-                    </div>
-                    <div className={style.contact}><b>Twitter:</b>
-                            <input {...register(`contacts.twitter`)} />
-                    </div>
-                    <div className={style.contact}><b>Instagram:</b>
-                            <input {...register(`contacts.instagram`)} />
-                    </div>
-                    <div className={style.contact}><b>YouTube:</b>
-                            <input {...register(`contacts.youtube`)} />
-                    </div>
-                    <div className={style.contact}><b>GitHub:</b>
-                            <input {...register(`contacts.github`)} />
-                    </div>
-                    <div className={style.contact}><b>MainLink:</b>
-                            <input {...register(`contacts.mainLink`)} />
-                    </div>
+                    {
+                        (Object.keys(profile.contacts) as Array<keyof ContactsType>).map(contact =>
+                            <div key={contact} className={style.contact}><b>{contact}:</b>
+                                <input {...register(`contacts.${contact}`)} />
+                            </div>)
+                    }
                 </div>
                 <ErrorMessage errors={errors} name="server" render={({ message }) => <div className={style.error}>{message}</div>} />
                 <button>Save changes</button>

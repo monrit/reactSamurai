@@ -1,9 +1,10 @@
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
-import { addMessage, InitialStateType } from "../../redux/messagesReducer";
+import { actions as messagesActions, InitialStateType } from "../../redux/messagesReducer";
 import { AppStateType } from "../../redux/reduxStore";
 import Messages from "./Messages";
+const { addMessage } = messagesActions;
 
 type MapStateType = {
     messagesPage: InitialStateType

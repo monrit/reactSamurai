@@ -1,7 +1,10 @@
-import { profileAPI } from "../api/api";
+import { profileAPI } from "../api/profileAPI";
 import { globalError } from "./appReducer";
 import { PostType, ProfileType, PhotosType } from "../types/types";
 import { InputsType } from "../components/Profile/ProfileInfo/ProfileInfoForm/ProfileInfoForm";
+import { ThunkAction } from "redux-thunk";
+import { AppStateType, InferActionsTypes } from "./reduxStore";
+
 const ADD_POST = "profile/ADD-POST";
 const SET_USER_PROFILE = "profile/SET-USER-PROFILE";
 const RESET_PROFILE_STATE = "profile/RESET-PROFILE-STATE";
@@ -9,7 +12,6 @@ const SET_USER_STATUS = "profile/SET-USER-STATUS";
 const DELETE_POST = "profile/DELETE-POST";
 const LIKE = "profile/LIKE";
 const SET_PROFILE_PICTURE = "profile/SET-PROFILE-PICTURE";
-
 
 const initialState = {
     posts: [
@@ -21,7 +23,7 @@ const initialState = {
 };
 
 type InitialStateType = typeof initialState;
-type ActionType = AddPostActionType | SetUserProfileActionType | ResetProfileStateActionType | SetUserStatusActionType | LikeActionType | DeletePostActionType | SetProfilePictureActionType;
+type ActionType = InferActionsTypes<typeof actions>;
 
 function profileReducer(state = initialState, action: ActionType): InitialStateType {
     switch (action.type) {
@@ -73,9 +75,9 @@ function profileReducer(state = initialState, action: ActionType): InitialStateT
                 profile: {
                     ...state.profile,
                     photos: action.photos
-                } as ProfileType //TEMPORARY, NEEDS FIX!!!
+                } as ProfileType
             }
-        case RESET_PROFILE_STATE: 
+        case RESET_PROFILE_STATE:
             return {
                 ...state,
                 ...action.initialState
@@ -85,88 +87,65 @@ function profileReducer(state = initialState, action: ActionType): InitialStateT
     }
 }
 
-export type AddPostActionType = {
-    type: typeof ADD_POST,
-    text: string
+export const actions = {
+    addPost: (text: string) => ({ type: ADD_POST, text } as const),
+    setUserProfile: (profile: ProfileType) => ({ type: SET_USER_PROFILE, profile } as const),
+    resetProfileState: () => ({ type: RESET_PROFILE_STATE, initialState } as const),
+    setUserStatus: (status: string) => ({ type: SET_USER_STATUS, status } as const),
+    like: (id: number) => ({ type: LIKE, id } as const),
+    deletePost: (id: number) => ({ type: DELETE_POST, id } as const),
+    setProfilePicture: (photos: PhotosType) => ({ type: SET_PROFILE_PICTURE, photos } as const)
 };
-type SetUserProfileActionType = {
-    type: typeof SET_USER_PROFILE,
-    profile: ProfileType
-};
-type ResetProfileStateActionType = {
-    type: typeof RESET_PROFILE_STATE,
-    initialState: InitialStateType
-};
-type SetUserStatusActionType = {
-    type: typeof SET_USER_STATUS,
-    status: string
-};
-export type LikeActionType = {
-    type: typeof LIKE,
-    id: number
-};
-export type DeletePostActionType = {
-    type: typeof DELETE_POST,
-    id: number
-};
-type SetProfilePictureActionType = {
-    type: typeof SET_PROFILE_PICTURE,
-    photos: PhotosType
-};
-export const addPost = (text: string): AddPostActionType => ({ type: ADD_POST, text });
-export const setUserProfile = (profile: ProfileType): SetUserProfileActionType => ({ type: SET_USER_PROFILE, profile });
-export const resetProfileState = (): ResetProfileStateActionType => ({ type: RESET_PROFILE_STATE, initialState });
-export const setUserStatus = (status: string): SetUserStatusActionType => ({ type: SET_USER_STATUS, status });
-export const like = (id: number): LikeActionType => ({ type: LIKE, id });
-export const deletePost = (id: number): DeletePostActionType => ({ type: DELETE_POST, id });
-export const setProfilePicture = (photos: PhotosType): SetProfilePictureActionType => ({ type: SET_PROFILE_PICTURE, photos });
 
-export const getUser = (userId: number) => async (dispatch: any) => {
+type DispatchActionsType = ActionType;
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, DispatchActionsType>;
+
+export const getUser = (userId: number): ThunkType => async (dispatch) => {
     try {
         const data = await profileAPI.getUser(userId);
-        dispatch(setUserProfile(data));
+        dispatch(actions.setUserProfile(data));
     } catch (err) {
         dispatch(globalError(err));
     }
 };
 
-export const getUserStatus = (userId: number) => async (dispatch: any) => {
+export const getUserStatus = (userId: number): ThunkType => async (dispatch) => {
     try {
         const data = await profileAPI.getStatus(userId);
-        dispatch(setUserStatus(data));
+        dispatch(actions.setUserStatus(data));
     } catch (err) {
         dispatch(globalError(err));
     }
 };
 
-export const updateUserStatus = (status: string) => async (dispatch: any) => {
+export const updateUserStatus = (status: string): ThunkType => async (dispatch) => {
     try {
         const data = await profileAPI.updateStatus(status);
         if (data.resultCode === 0) {
-            dispatch(setUserStatus(status));
+            dispatch(actions.setUserStatus(status));
         }
     } catch (err) {
         dispatch(globalError(err));
     }
 };
 
-export const updateProfilePicture = (picture: File) => async (dispatch: any) => {
+export const updateProfilePicture = (picture: File): ThunkType => async (dispatch) => {
     try {
         const data = await profileAPI.updateProfilePicture(picture);
         if (data.resultCode === 0) {
-            dispatch(setProfilePicture(data.data.photos));
+            dispatch(actions.setProfilePicture(data.data.photos));
         }
     } catch (err) {
         dispatch(globalError(err));
     }
 };
 
-export const updateProfileInfo = (profileData: InputsType, setError: any, setEditMode: any) => async (dispatch: any, getState: any) => {
+export const updateProfileInfo = (profileData: InputsType, setError: any, setEditMode: () => void): ThunkType => async (dispatch, getState) => {
     try {
         const data = await profileAPI.updateProfileInfo(profileData);
         if (data.resultCode === 0) {
             const userId = getState().auth.id;
-            dispatch(getUser(userId));
+            dispatch(getUser(userId as number));
             setEditMode();
         } else {
             setError("server", {

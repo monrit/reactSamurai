@@ -3,58 +3,67 @@ import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import style from "./ProfileStatus.module.css";
 
-// export class ProfileStatusC extends React.Component {
+type ClassPropsType = {
+    status: string,
+    updateUserStatus: (status: string) => void
+};
+type ClassStateType = {
+    editMode: boolean,
+    status: string 
+};
 
-//     state = {
-//         editMode: false,
-//         status: this.props.status
-//     };
+export class ProfileStatusC extends React.Component<ClassPropsType, ClassStateType> {
 
-//     activateEditMode() {
-//         this.setState({
-//             editMode: true
-//         });
-//     }
+    state = {
+        editMode: false,
+        status: this.props.status
+    };
 
-//     deactivateUserStatus() {
-//         this.setState({
-//             editMode: false
-//         });
-//         if (this.state.status !== this.props.status) {
-//             this.props.updateUserStatus(this.state.status);
-//         }
-//     }
+    activateEditMode() {
+        this.setState({
+            editMode: true
+        });
+    }
 
-//     onInput(e) {
-//         this.setState({
-//             status: e.currentTarget.value
-//         })
-//     }
+    deactivateUserStatus() {
+        this.setState({
+            editMode: false
+        });
+        if (this.state.status !== this.props.status) {
+            this.props.updateUserStatus(this.state.status);
+        }
+    }
 
-//     componentDidUpdate(prevProps, prevState) {
-//         if (prevProps.status !== this.props.status) {
-//             this.setState({
-//                 status: this.props.status
-//             });
-//         }
-//     }
+    onInput(e: ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            status: e.currentTarget.value
+        })
+    }
 
-//     render() {
-//         return (
-//             <div>
-//                 {this.state.editMode
-//                     ?
-//                     <div>
-//                         <input onChange={this.onInput.bind(this)} autoFocus value={this.state.status} onBlur={this.deactivateUserStatus.bind(this)} />
-//                     </div>
-//                     :
-//                     <div onDoubleClick={this.activateEditMode.bind(this)}>
-//                         <span>{this.props.status}</span>
-//                     </div>}
-//             </div>
-//         );
-//     }
-// }
+    componentDidUpdate(prevProps: ClassPropsType, prevState: ClassStateType) {
+        if (prevProps.status !== this.props.status) {
+            this.setState({
+                status: this.props.status
+            });
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                {this.state.editMode
+                    ?
+                    <div>
+                        <input onChange={this.onInput.bind(this)} autoFocus value={this.state.status} onBlur={this.deactivateUserStatus.bind(this)} />
+                    </div>
+                    :
+                    <div onDoubleClick={this.activateEditMode.bind(this)}>
+                        <span>{this.props.status}</span>
+                    </div>}
+            </div>
+        );
+    }
+}
 
 type PropsType = {
     statusProps: string,

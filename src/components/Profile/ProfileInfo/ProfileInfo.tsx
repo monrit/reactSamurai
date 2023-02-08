@@ -5,6 +5,7 @@ import profilePhoto from "../../../assets/images/profilePicture.jpg";
 import { FC, useState } from "react";
 import ProfileInfoForm from "./ProfileInfoForm/ProfileInfoForm";
 import { PropsType } from "../Profile";
+import { ContactsType } from "../../../types/types";
 
 
 const ProfileInfo: FC<PropsType> = ({ profile, isOwner, status, updateUserStatus, updateProfileInfo, updateProfilePicture }) => {
@@ -23,7 +24,7 @@ const ProfileInfo: FC<PropsType> = ({ profile, isOwner, status, updateUserStatus
                 <img src={profile.photos.large || profilePhoto} alt={profile.fullName + " avatar"} />
                 {isOwner && !editMode && <button onClick={() => setEditMode(true)}>Edit profile</button>}
                 {editMode ? <ProfileInfoForm updateProfileInfo={updateProfileInfo} updateProfilePicture={updateProfilePicture} setEditMode={setEditMode} profile={profile} /> : <div>
-                    <ProfileStatus canEditStatus={isOwner} statusProps={status ? status: ""} updateUserStatus={updateUserStatus} />
+                    <ProfileStatus canEditStatus={isOwner} statusProps={status ? status : ""} updateUserStatus={updateUserStatus} />
                     <div>
                         <b>Full name:</b> {profile.fullName}
                     </div>
@@ -36,15 +37,13 @@ const ProfileInfo: FC<PropsType> = ({ profile, isOwner, status, updateUserStatus
                     </div>
                     <div>
                         <b>Contacts:</b>
-                        <div className={style.contact}><b>Facebook:</b> {profile.contacts.facebook}</div>
-                        <div className={style.contact}><b>Website:</b> {profile.contacts.website}</div>
-                        <div className={style.contact}><b>Vk:</b> {profile.contacts.vk}</div>
-                        <div className={style.contact}><b>Twitter:</b> {profile.contacts.twitter}</div>
-                        <div className={style.contact}><b>Instagram:</b> {profile.contacts.instagram}</div>
-                        <div className={style.contact}><b>YouTube:</b> {profile.contacts.youtube}</div>
-                        <div className={style.contact}><b>GitHub:</b> {profile.contacts.github}</div>
-                        <div className={style.contact}><b>MainLink:</b> {profile.contacts.mainLink}</div>
-                        
+                        {
+                            (Object.keys(profile.contacts) as Array<keyof ContactsType>).map(contact =>
+                                <div key={contact} className={style.contact}>
+                                    <b>{contact}:</b> {profile.contacts[contact]}
+                                </div>
+                            )
+                        }
                     </div>
                 </div>}
             </div>
