@@ -109,14 +109,14 @@ const ProfileStatus: FC<PropsType> = ({ statusProps, canEditStatus, updateUserSt
         <div>
             {editMode
                 ?
-                <form onBlur={handleSubmit(deactivateEditMode)}>
+                <form onBlur={handleSubmit(deactivateEditMode)} onSubmit={handleSubmit(deactivateEditMode)}>
                     <input {...register("status", {
                         required: true,
                     })} autoFocus className={style.status}/>
                 </form>
                 :
                 <div>
-                    <span onDoubleClick={activateEditMode}><b>Status:</b> {statusProps}</span>
+                    <span onDoubleClick={activateEditMode}><b>Status:</b> {status}</span>
                 </div>}
         </div>
     );

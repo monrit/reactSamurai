@@ -1,4 +1,3 @@
-import style from "./Users.module.css";
 import Preloader from "../common/Preloader/Preloader";
 import Paginator from "../common/Paginator/Paginator";
 import User from "./User/User";

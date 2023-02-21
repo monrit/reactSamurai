@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getUser, getUserStatus, updateUserStatus, updateProfilePicture, updateProfileInfo } from "../../redux/profileReducer";
+import { getUser, getUserStatus, updateUserStatus, updateProfilePicture, updateProfileInfo, follow, unfollow } from "../../redux/profileReducer";
 import Profile from "./Profile";
 import { withRouter } from "../../hoc/withRouter";
 import { compose } from "redux";
@@ -12,6 +12,8 @@ type MapStateType = {
     profile: ProfileType | null,
     status: string | null,
     id: number | null,
+    followed: boolean,
+    followingInProgress: boolean,
     router?: any
 };
 type DispathStateToPropsType = {
@@ -19,7 +21,9 @@ type DispathStateToPropsType = {
     getUserStatus: (userId: number) => void,
     updateUserStatus: (status: string) => void,
     updateProfilePicture: (picture: File) => void,
-    updateProfileInfo: (profileData: InputsType, setError: any, setEditModeFalse: () => void) => void
+    updateProfileInfo: (profileData: InputsType, setError: any, setEditModeFalse: () => void) => void,
+    follow: (userId: number) => void,
+    unfollow: (userId: number) => void
 };
 type PropsType = MapStateType & DispathStateToPropsType;
 
@@ -54,6 +58,10 @@ class ProfileContainer extends React.Component<PropsType> {
                 status={this.props.status}
                 updateUserStatus={this.props.updateUserStatus}
                 updateProfileInfo={this.props.updateProfileInfo}
+                followed={this.props.followed}
+                followingInProgress={this.props.followingInProgress}
+                follow={this.props.follow}
+                unfollow={this.props.unfollow}
             />
         );
     }
@@ -63,11 +71,13 @@ function mapStateToProps(state: AppStateType): MapStateType {
     return {
         profile: state.profilePage.profile,
         status: state.profilePage.status,
-        id: state.auth.id
+        id: state.auth.id,
+        followed: state.profilePage.followed,
+        followingInProgress: state.profilePage.followingInProgress
     }
 }
 
 export default compose(
-    connect<MapStateType, DispathStateToPropsType, null, AppStateType>(mapStateToProps, { getUser, getUserStatus, updateUserStatus, updateProfilePicture, updateProfileInfo }),
+    connect<MapStateType, DispathStateToPropsType, null, AppStateType>(mapStateToProps, { getUser, getUserStatus, updateUserStatus, updateProfilePicture, updateProfileInfo, follow, unfollow }),
     withRouter
 )(ProfileContainer);

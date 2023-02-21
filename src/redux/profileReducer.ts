@@ -4,6 +4,9 @@ import { PostType, ProfileType, PhotosType } from "../types/types";
 import { InputsType } from "../components/Profile/ProfileInfo/ProfileInfoForm/ProfileInfoForm";
 import { ThunkAction } from "redux-thunk";
 import { AppStateType, InferActionsTypes } from "./reduxStore";
+import { usersAPI } from "../api/usersAPI";
+import { follow as usersFollow, unfollow as usersUnfollow } from "./usersReducer"
+import { getFriends } from "./sidebarReducer";
 
 const ADD_POST = "profile/ADD-POST";
 const SET_USER_PROFILE = "profile/SET-USER-PROFILE";
@@ -12,6 +15,8 @@ const SET_USER_STATUS = "profile/SET-USER-STATUS";
 const DELETE_POST = "profile/DELETE-POST";
 const LIKE = "profile/LIKE";
 const SET_PROFILE_PICTURE = "profile/SET-PROFILE-PICTURE";
+const SET_FOLLOWED = "profile/SET-FOLLOWED";
+const SET_FOLLOWING_IN_PROGRESS = "profile/SET-FOLLOWING-IN-PROGRESS";
 
 const initialState = {
     posts: [
@@ -19,7 +24,9 @@ const initialState = {
         { id: 1, message: "На могилі моїй посадіть молоду яворииинуу", likes: 15, liked: false }
     ] as Array<PostType>,
     profile: null as ProfileType | null,
-    status: null as string | null
+    status: null as string | null,
+    followed: false,
+    followingInProgress: false
 };
 
 type InitialStateType = typeof initialState;
@@ -82,6 +89,16 @@ function profileReducer(state = initialState, action: ActionType): InitialStateT
                 ...state,
                 ...action.initialState
             }
+        case SET_FOLLOWED: 
+            return {
+                ...state,
+                followed: action.followed
+            }
+        case SET_FOLLOWING_IN_PROGRESS: 
+            return {
+                ...state,
+                followingInProgress: action.following
+            }
         default:
             return state;
     }
@@ -94,7 +111,9 @@ export const actions = {
     setUserStatus: (status: string) => ({ type: SET_USER_STATUS, status } as const),
     like: (id: number) => ({ type: LIKE, id } as const),
     deletePost: (id: number) => ({ type: DELETE_POST, id } as const),
-    setProfilePicture: (photos: PhotosType) => ({ type: SET_PROFILE_PICTURE, photos } as const)
+    setProfilePicture: (photos: PhotosType) => ({ type: SET_PROFILE_PICTURE, photos } as const),
+    setFollowed: (followed: boolean) => ({ type: SET_FOLLOWED, followed } as const),
+    setFollowingInProgress: (following: boolean) => ({ type: SET_FOLLOWING_IN_PROGRESS, following } as const)
 };
 
 type DispatchActionsType = ActionType;
@@ -103,7 +122,9 @@ type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, DispatchActio
 export const getUser = (userId: number): ThunkType => async (dispatch) => {
     try {
         const data = await profileAPI.getUser(userId);
+        const followedData = await usersAPI.getFollowed(userId);
         dispatch(actions.setUserProfile(data));
+        dispatch(actions.setFollowed(followedData));
     } catch (err) {
         dispatch(globalError(err));
     }
@@ -158,4 +179,29 @@ export const updateProfileInfo = (profileData: InputsType, setError: any, setEdi
     }
 };
 
+export const follow = (userId: number): ThunkType => async (dispatch) => {
+    dispatch(actions.setFollowingInProgress(true));
+    try {
+        await dispatch(usersFollow(userId));
+        dispatch(getFriends());
+        const followedData = await usersAPI.getFollowed(userId);
+        dispatch(actions.setFollowed(followedData));
+        dispatch(actions.setFollowingInProgress(false));
+    } catch (err) {
+        dispatch(globalError(err));
+    }
+};
+
+export const unfollow = (userId: number): ThunkType => async (dispatch) => {
+    dispatch(actions.setFollowingInProgress(true));
+    try {
+        await dispatch(usersUnfollow(userId));
+        dispatch(getFriends());
+        const followedData = await usersAPI.getFollowed(userId);
+        dispatch(actions.setFollowed(followedData));
+        dispatch(actions.setFollowingInProgress(false));
+    } catch (err) {
+        dispatch(globalError(err));
+    }
+};
 export default profileReducer;

@@ -40,7 +40,7 @@ type SetInitializedActionType = {
     type: typeof INITIALIZED_SUCCESS
 };
 
-type SetGlobalErrorActionType = {
+export type SetGlobalErrorActionType = {
     type: typeof GLOBAL_ERROR,
     payload: {
         globalError: GlobalErrorType

@@ -1,10 +1,10 @@
-import { Dispatch } from "redux";
-import { ThunkAction } from "redux-thunk";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { usersAPI } from "../api/usersAPI";
 import { UserType } from "../types/types";
 import { changePropsInObjArray } from "../utils/arrayIteration";
-import { globalError, GlobalErrorType } from "./appReducer";
+import { globalError } from "./appReducer";
 import { AppStateType, InferActionsTypes } from "./reduxStore";
+import { getFriends } from "./sidebarReducer";
 
 const FOLLOW = "users/FOLLOW";
 const UNFOLLOW = "users/UNFOLLOW";
@@ -81,14 +81,19 @@ const actions = {
 };
 
 
-type DispatchActionsType = ActionType | GlobalErrorType;
+type DispatchActionsType = ActionType;
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, DispatchActionsType>;
 
-export const getUsers = (currentPage: number, pageSize: number): ThunkType => async (dispatch, getState) => {
+export const getUsers = (currentPage: number, pageSize: number, friends: boolean | undefined): ThunkType => async (dispatch, getState) => {
     dispatch(actions.setIsFetching(true));
     dispatch(actions.setCurrentPage(currentPage));
     try {
-        const data = await usersAPI.getUsers(currentPage, pageSize);
+        let data;
+        if (friends) {
+            data = await usersAPI.getFriends(currentPage, pageSize);
+        } else {
+            data = await usersAPI.getUsers(currentPage, pageSize);
+        }
         dispatch(actions.setUsers(data.items));
         dispatch(actions.setIsFetching(false));
         dispatch(actions.setTotalUsers(data.totalCount));
@@ -100,7 +105,7 @@ export const getUsers = (currentPage: number, pageSize: number): ThunkType => as
 async function followUnfollowFlow(
     userId: number,
     apiMethod: any,
-    dispatch: Dispatch<DispatchActionsType>,
+    dispatch: ThunkDispatch<AppStateType, unknown, ActionType>,
     actionCreator: (userId: number) => ReturnType<typeof actions.followSuccess> | ReturnType<typeof actions.unfollowSuccess>
     ) {
     dispatch(actions.setFollowingInProgress(true, userId));
@@ -114,15 +119,16 @@ async function followUnfollowFlow(
     } catch(err) {
         dispatch(globalError(err));
     }
-    dispatch(actions.setFollowingInProgress(false, userId))
+    dispatch(getFriends());
+    dispatch(actions.setFollowingInProgress(false, userId));
 }
 
 export const unfollow = (userId: number): ThunkType => async (dispatch) => {
-    followUnfollowFlow(userId, usersAPI.unfollow.bind(usersAPI), dispatch, actions.unfollowSuccess);
+    return followUnfollowFlow(userId, usersAPI.unfollow.bind(usersAPI), dispatch, actions.unfollowSuccess);
 };
 
 export const follow = (userId: number): ThunkType => async (dispatch) => {
-    followUnfollowFlow(userId, usersAPI.follow.bind(usersAPI), dispatch, actions.followSuccess);
+    return followUnfollowFlow(userId, usersAPI.follow.bind(usersAPI), dispatch, actions.followSuccess);
 };
 
 export default usersReducer;

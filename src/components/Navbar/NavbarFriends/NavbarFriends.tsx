@@ -14,8 +14,7 @@ const Friends: FC<PropsType> = ({ friends }) => {
         [style.active]: navData.isActive
     });
 
-    const friendsElements = friends.map(friend => <Friend key={friend.id} avatar={friend.avatar} username={friend.username} />);
-    
+    const friendsElements = friends.map(friend => <Friend key={friend.id} avatar={friend.photos.large} username={friend.name} id={friend.id} />);
     return (
         <div className={style.friends}>
             <NavLink to="/friends" className={selectedLink}>Friends</NavLink>

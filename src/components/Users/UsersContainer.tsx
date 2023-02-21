@@ -20,20 +20,30 @@ type MapStateType = {
 type DispathStateToPropsType = {
     follow: (userId: number) => void,
     unfollow: (userId: number) => void,
-    getUsers: (currentPage: number, pageSize: number) => void
+    getUsers: (currentPage: number, pageSize: number, friends: boolean | undefined) => void
+};
+type OwnProps = {
+    friends?: boolean
 };
 
-type UsersContainerType = MapStateType & DispathStateToPropsType;
+type UsersContainerType = MapStateType & DispathStateToPropsType & OwnProps;
 
 class UsersContainer extends React.Component<UsersContainerType> {
     componentDidMount() {
         const { currentPage, pageSize } = this.props;
-        this.props.getUsers(currentPage, pageSize);
+        this.props.getUsers(currentPage, pageSize, this.props.friends);
+    }
+    
+    componentDidUpdate(prevProps: Readonly<UsersContainerType>): void {
+        if (prevProps.friends !== this.props.friends) {
+            const { pageSize } = this.props;
+            this.props.getUsers(1, pageSize, this.props.friends);
+        }
     }
 
     onPageChange = (currentPage: number) => {
         const { pageSize } = this.props;
-        this.props.getUsers(currentPage, pageSize);
+        this.props.getUsers(currentPage, pageSize, this.props.friends);
     };
 
     follow = (userId: number) => {
@@ -73,6 +83,6 @@ function mapStateToProps(state: AppStateType): MapStateType {
 }
 
 export default compose(
-    connect<MapStateType, DispathStateToPropsType, null, AppStateType>(mapStateToProps, { follow, unfollow, getUsers }),
+    connect<MapStateType, DispathStateToPropsType, OwnProps, AppStateType>(mapStateToProps, { follow, unfollow, getUsers }),
     withAuthRedirect
 )(UsersContainer);

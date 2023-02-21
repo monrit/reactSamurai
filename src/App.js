@@ -5,9 +5,9 @@ import { initializeApp } from "./redux/appReducer";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Preloader from "./components/common/Preloader/Preloader";
-import Navbar from './components/Navbar/Navbar';
 import { compose } from "redux";
 import { Alert, Snackbar } from '@mui/material';
+import NavbarContainer from './components/Navbar/NavbarContainer';
 const UsersContainer = React.lazy(() => import("./components/Users/UsersContainer"));
 const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
 const LoginContainer = React.lazy(() => import("./components/Login/LoginContainer"));
@@ -36,7 +36,7 @@ class App extends React.Component {
                 </Snackbar>
                 <div className="my-app-wrapper">
                     <HeaderContainer />
-                    <Navbar friends={this.props.friends} />
+                    <NavbarContainer />
                     <div className="my-app-content">
                         <React.Suspense fallback={<div>Lazy loading...</div>}>
                             <Routes>
@@ -48,6 +48,7 @@ class App extends React.Component {
                                 <Route path="/music" element={<Music />} />
                                 <Route path="/settings" element={<Settings />} />
                                 <Route path="/users" element={<UsersContainer />} />
+                                <Route path="/friends" element={<UsersContainer friends={true}/>} />
                                 <Route path="/login/facebook" element={<div>facebook login</div>} />
                                 <Route path="/login" element={<LoginContainer />} />
                                 <Route path="*" element={<div>404 NOT FOUND</div>} />

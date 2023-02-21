@@ -8,7 +8,7 @@ import { PropsType } from "../Profile";
 import { ContactsType } from "../../../types/types";
 
 
-const ProfileInfo: FC<PropsType> = ({ profile, isOwner, status, updateUserStatus, updateProfileInfo, updateProfilePicture }) => {
+const ProfileInfo: FC<PropsType> = ({ profile, isOwner, status, followed, followingInProgress, updateUserStatus, updateProfileInfo, updateProfilePicture, follow, unfollow }) => {
     const [editMode, setEditMode] = useState(false);
 
     if (!profile) {
@@ -22,6 +22,9 @@ const ProfileInfo: FC<PropsType> = ({ profile, isOwner, status, updateUserStatus
             </div>
             <div className={style.description}>
                 <img src={profile.photos.large || profilePhoto} alt={profile.fullName + " avatar"} />
+                {!isOwner && (followed
+                    ? <button disabled={followingInProgress} onClick={() => { unfollow(profile.userId) }}>UNFOLLOW</button>
+                    : <button disabled={followingInProgress} onClick={() => { follow(profile.userId) }}>FOLLOW</button>)}
                 {isOwner && !editMode && <button onClick={() => setEditMode(true)}>Edit profile</button>}
                 {editMode ? <ProfileInfoForm updateProfileInfo={updateProfileInfo} updateProfilePicture={updateProfilePicture} setEditMode={setEditMode} profile={profile} /> : <div>
                     <ProfileStatus canEditStatus={isOwner} statusProps={status ? status : ""} updateUserStatus={updateUserStatus} />

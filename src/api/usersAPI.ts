@@ -18,6 +18,9 @@ export const usersAPI = {
         return (await axiosInstance.delete<ResponseType>(`follow/${userId}`)).data;
     },
     async getFriends(currentPage = 1, pageSize = 5) {
-        return (await axiosInstance.get<GetUsersResponseType>(`users?page=${currentPage}&count=${pageSize}%friend=true`)).data;
+        return (await axiosInstance.get<GetUsersResponseType>(`users?page=${currentPage}&count=${pageSize}&friend=true`)).data;
+    },
+    async getFollowed(userId: number) {
+        return (await axiosInstance.get<boolean>(`follow/${userId}`)).data;
     }
 };

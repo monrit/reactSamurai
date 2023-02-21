@@ -9,6 +9,10 @@ export type PropsType = {
     profile: ProfileType | null,
     isOwner: boolean,
     status: string | null,
+    followed: boolean,
+    followingInProgress: boolean,
+    follow: (userId: number) => void,
+    unfollow: (userId: number) => void,
     updateUserStatus: (status: string) => void,
     updateProfilePicture: (picture: File) => void,
     updateProfileInfo: (profileInfo: InputsType, setError: any, setEditModeFalse: () => void) => void

@@ -24,7 +24,10 @@ const Paginator: FC<PropsType> = ({ onPageChange, currentPage, totalItems, pageS
 
     const buttons: Array<number> = [];
 
-    const from = portionSize * currentPortion - portionSize + 1;
+    let from = portionSize * currentPortion - portionSize + 1;
+    if (from < 0) {
+        from = 1;
+    }
 
     const to = portionSize * currentPortion;
 
