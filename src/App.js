@@ -1,36 +1,75 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
-import Navbar from './components/Navbar/Navbar';
-import News from './components/News/News';
-import Music from './components/Music/Music';
-import Settings from "./components/Settings/Settings";
-import MessagesContainer from "./components/Messages/MessagesContainer";
-import UsersContainer from "./components/Users/UsersContainer";
-import ProfileContainer from "./components/Profile/ProfileContainer";
+import React from "react";
+import { connect } from "react-redux";
+import { initializeApp } from "./redux/appReducer";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import Login from "./components/Login/Login";
+import Preloader from "./components/common/Preloader/Preloader";
+import { compose } from "redux";
+import { Alert, Snackbar } from '@mui/material';
+import NavbarContainer from './components/Navbar/NavbarContainer';
+const UsersContainer = React.lazy(() => import("./components/Users/UsersContainer"));
+const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
+const LoginContainer = React.lazy(() => import("./components/Login/LoginContainer"));
+const News = React.lazy(() => import("./components/News/News"));
+const Music = React.lazy(() => import("./components/Music/Music"));
+const Settings = React.lazy(() => import("./components/Settings/Settings"));
+const MessagesContainer = React.lazy(() => import("./components/Messages/MessagesContainer"));
 
-const App = (props) => {
-  return (
-    <BrowserRouter>
-      <div className="my-app-wrapper">
-        <HeaderContainer />
-        <Navbar state={props.state.sidebar} />
-        <div className="my-app-content">
-          <Routes>
-            <Route path="/profile/:userId" element={<ProfileContainer />} />
-            <Route path="/profile" element={<ProfileContainer />} />
-            <Route path="/messages/*" element={<MessagesContainer />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/music" element={<Music />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/users" element={<UsersContainer />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </div>
-      </div>
-    </BrowserRouter>
-  );
+class App extends React.Component {
+    componentDidMount() {
+        this.props.initializeApp();
+    }
+
+    render() {
+        if (!this.props.initalized) {
+            return <Preloader />;
+        }
+        return (
+            <BrowserRouter>
+                <Snackbar
+                    open={!!this.props.globalError}
+                >
+                    <Alert severity="error" sx={{ width: '100%' }}>
+                        {this.props.globalError?.message}
+                    </Alert>
+                </Snackbar>
+                <div className="my-app-wrapper">
+                    <HeaderContainer />
+                    <NavbarContainer />
+                    <div className="my-app-content">
+                        <React.Suspense fallback={<div>Lazy loading...</div>}>
+                            <Routes>
+                                <Route path="/" element={<Navigate to="/login" />} />
+                                <Route path="/profile/:userId" element={<ProfileContainer />} />
+                                <Route path="/profile" element={<ProfileContainer />} />
+                                <Route path="/messages/*" element={<MessagesContainer />} />
+                                <Route path="/news" element={<News />} />
+                                <Route path="/music" element={<Music />} />
+                                <Route path="/settings" element={<Settings />} />
+                                <Route path="/users" element={<UsersContainer />} />
+                                <Route path="/friends" element={<UsersContainer friends={true}/>} />
+                                <Route path="/login/facebook" element={<div>facebook login</div>} />
+                                <Route path="/login" element={<LoginContainer />} />
+                                <Route path="*" element={<div>404 NOT FOUND</div>} />
+                            </Routes>
+                        </React.Suspense>
+                    </div>
+                </div>
+            </BrowserRouter>
+        );
+    }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        initalized: state.app.initialized,
+        isAuth: state.auth.isAuth,
+        globalError: state.app.globalError,
+        friends: state.sidebar.friends
+    };
+};
+
+export default compose(
+    connect(mapStateToProps, { initializeApp })
+)(App);
